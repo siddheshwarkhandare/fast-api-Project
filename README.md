@@ -6,7 +6,7 @@ A small CRUD API built with **FastAPI** and **Pydantic** for managing patient re
 
 - Create, view, update, and sort patient records
 
-![alt text](static/image.png)
+![alt text](media/image.png)
 - Request/response validation handled by Pydantic models
 - BMI and a weight-category verdict computed as a Pydantic `computed_field`
 - Data persisted to a local `patients.json` file — no external database needed
@@ -82,7 +82,7 @@ uvicorn main:app --reload
 ### Example: create a patient
 
 
-![alt text](<static/image copy 2.png>)
+![alt text](<media/image copy 2.png>)
 ```bash
 curl -X POST http://127.0.0.1:8000/create \
   -H "Content-Type: application/json" \
@@ -103,7 +103,7 @@ curl -X POST http://127.0.0.1:8000/create \
 GET /sort?sort_by=bmi&order=desc
 
 ```
-![alt text](<static/image copy.png>)
+![alt text](<media/image copy.png>)
 ## Known Issues
 
 These were confirmed by running the code directly rather than just reading it, so a future cleanup pass can target them specifically:
