@@ -1,12 +1,15 @@
-from fastapi import FastAPI,Path,HTTPException,Query
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel,Field,computed_field,field_validator
-from typing import Annotated,Literal, Optional
+from fastapi import FastAPI, Path, HTTPException, Query, Request
+from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel, Field, computed_field, field_validator
+from typing import Annotated, Literal, Optional
 from fastapi.staticfiles import StaticFiles
 import json
 
 app = FastAPI()# object of the fastapi this is import for any project
-app.mount("/ui", StaticFiles(directory="static", html=True), name="ui")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="template")
+
 
 class patiant(BaseModel):
     
@@ -67,9 +70,14 @@ class PatiantUpdate(BaseModel):
 
 
 #CURD (creat,update,read,delete) this are import api componet
-@app.get("/")# this is get request that get data from the data base it also provide loction to the url 
-             #When someone sends an HTTP GET request to the / (root) URL, run the function below.
-
+#@app.get("/")# this is get request that get data from the data base it also provide loction to the url 
+'''             #When someone sends an HTTP GET request to the / (root) URL, run the function below.
+@app.get("/", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request}
+    )
 def load_data():
     with open('patients.json','r') as f:
         data=json.load(f)
@@ -82,6 +90,28 @@ def save_data(data):
 
 def read_root():
     return{"Hello":"patian magement api"}
+    '''
+
+
+@app.get("/", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request}
+    )
+
+
+def load_data():
+    with open("patients.json", "r") as f:
+        data = json.load(f)
+        if data is None:
+            data = {}
+    return data
+
+
+def save_data(data):
+    with open("patients.json", "w") as f:
+        json.dump(data, f)
 
 @app.get("/about")
 
